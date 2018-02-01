@@ -31,7 +31,7 @@ var isNeedScroll = true;
 //提示的开关
 var messPromptFlag = 0;
 var tabflag = 1;
-// var currentClickId ="tabflag1"
+var currentClickId = "tabflag1"
 //获取带过来的参数
 function GetQueryString(name) {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -39,12 +39,14 @@ function GetQueryString(name) {
   if (r != null) return unescape(r[2]);
   return null;
 }
-function pageIndeLoad(data){
+
+function pageIndeLoad(data) {
   if (!isResultPage) {
     return;
   }
   //再次回到主页的方法
   if (data != 0) {
+    console.log('')
     switch (whichTab) {
       case 1:
         tab1Click();
@@ -88,11 +90,12 @@ function pageIndeLoad(data){
 }
 //开启上拉刷新  下拉加载更多
 function openUpAndDown() {
-  topRefreshTab2();
-  bottomloadMoreTab2();
+  topRefreshTab1();
+  bottomloadMoreTab1();
 }
 //定义内容区
 var currentTabBlock = $("#content_block_tab");
+
 function clearTabs() {
   $("#tab1").html("");
   $("#tab4").html("");
@@ -129,10 +132,6 @@ function tab3Click(callBack) {
   }
   whichTab = 3;
   isOpenBorside = 0;
-  // initParam();
-  // currentPostUrl = "/getAttentionBlog";
-  // currentTabBlock.appendTo($("#tab3"));
-  // $.pullToRefreshTrigger($("#tab3Content"));
 }
 
 //摄影
@@ -146,7 +145,7 @@ function tab4Click(callBack) {
   initParam();
   currentPostUrl = "/getOrgBlog";
   currentTabBlock.appendTo($("#tab4"));
-  $.pullToRefreshTrigger($("#tab4Content"));
+  $.pullToRefreshTrigger($("#tab1Content"));
 }
 
 //美文
@@ -160,7 +159,7 @@ function tab5Click(callBack) {
   initParam();
   currentPostUrl = "/getAttentionBlog";
   currentTabBlock.appendTo($("#tab5"));
-  $.pullToRefreshTrigger($("#tab5Content"));
+  $.pullToRefreshTrigger($("#tab1Content"));
 }
 //旅行	
 function tab6Click(callBack) {
@@ -172,7 +171,7 @@ function tab6Click(callBack) {
   isOpenBorside = 0;
   currentPostUrl = "/getAttentionBlog";
   currentTabBlock.appendTo($("#tab6"));
-  $.pullToRefreshTrigger($("#tab6Content"));
+  $.pullToRefreshTrigger($("#tab1Content"));
 }
 //初始化请求参数
 function initParam() {
@@ -184,6 +183,7 @@ function initParam() {
   parmaData.blogNum = 10;
   parmaData.imId = selfImId;
 }
+
 function getFirstAjax(callBack) {
   //开启加载指示器
   $.showIndicator();
@@ -266,13 +266,16 @@ function dataHandlerData(data) {
     $("#noMore").show();
     $.detachInfiniteScroll($('#tab1Content'));
   }
-  // if(currentClickId=="tabflag1"){
-  //   initUI(data);
-  // }
-  commentUi(data);
+  if (currentClickId == "tabflag1") {
+    initLunboUI(data);
+    commentUi(data);
+  } else {
+    topicUiComment(data);
+    commentUi(data);
+  }
 }
 
-function bottomloadMoreTab2() {
+function bottomloadMoreTab1() {
   // 添加'refresh'监听器
   $(document).on('refresh', '#tab1Content', function (e) {
     $(".content").scrollTop(0);
@@ -293,7 +296,7 @@ function bottomloadMoreTab2() {
   });
 }
 
-function topRefreshTab2() {
+function topRefreshTab1() {
   // 加载flag
   var loading = false;
   // 最多可加载的条目
@@ -309,7 +312,9 @@ function topRefreshTab2() {
     $('#noMore').hide();
     $('#loadMoreloding').show();
     // 模拟1s的加载过程
-    getFirstAjax(stopLoad);
+    if (currentClickId == "tabflag1") {
+      getFirstAjax(stopLoad);
+    }
 
     function stopLoad() {
       // 重置加载flag
@@ -323,8 +328,8 @@ function topRefreshTab2() {
     };
   });
 }
-//模板渲染
-function initUI(data) {
+//轮播模板渲染
+function initLunboUI(data) {
   var html = '';
   html += '<div class="swiper-container">' +
     '<div class="swiper-wrapper">' +
@@ -340,27 +345,28 @@ function initUI(data) {
     '</div>' +
     '<div class="swiper-pagination"></div>' +
     '</div>' +
-    '<div class="myProducts">'+
-    '<div class="productList">'+
-      '<img src="./images/01.png" alt="">'+
-      '<div>找兴趣</div>'+
-    '</div>'+
-    '<div class="productList">'+
-      '<img src="./images/02.png" alt="">'+
-      '<div>排行榜</div>'+
-    '</div>'+
-    '<div class="productList">'+
-      '<img src="./images/03.png" alt="">'+
-      '<div>看视频</div>'+
-    '</div>'+
-    '<div class="productList">'+
-      '<img src="./images/04.png" alt="">'+
-      '<div>美篇印品</div>'+
-    '</div>'+
-  '</div>'
+    '<div class="myProducts">' +
+    '<div class="productList">' +
+    '<img src="./images/01.png" alt="">' +
+    '<div>找兴趣</div>' +
+    '</div>' +
+    '<div class="productList">' +
+    '<img src="./images/02.png" alt="">' +
+    '<div>排行榜</div>' +
+    '</div>' +
+    '<div class="productList">' +
+    '<img src="./images/03.png" alt="">' +
+    '<div>看视频</div>' +
+    '</div>' +
+    '<div class="productList">' +
+    '<img src="./images/04.png" alt="">' +
+    '<div>美篇印品</div>' +
+    '</div>' +
+    '</div>'
   $('#cardContent').append(html);
 }
-function commentUi(data){
+//公共ui模板
+function commentUi(data) {
   var html = "";
   for (var i = 0; i < data.length; i++) {
     //模板渲染
@@ -374,9 +380,9 @@ function commentUi(data){
       '<div class="good">' +
       '<div class="good_people">' +
       '<span class="clearfix good_people_span">' +
-      '<img src="./images/timg.jpg">' +
-      '<img src="./images/timg.jpg">' +
-      '<img src="./images/timg.jpg">' +
+      '<img src="./images/21.jpg">' +
+      '<img src="./images/22.jpg">' +
+      '<img src="./images/timg1.jpg">' +
       '<img src="./images/timg.jpg">' +
       '<em><img src="./images/btn_icon_44.png">137</em>' +
       '</span>' +
@@ -389,11 +395,52 @@ function commentUi(data){
   }
   $('#cardContent').append(html);
 }
+//专题列表公共UI
+function topicUiComment(data) {
+  var html = "";
+  html += '<div class="specialTopic" id="specialTopic">'+
+    '<div class="titleName">'+
+      '<span class="name">专题</span>'+
+      '<span class="more" id="more" onclick="specialList()">更多></span>'+
+    '</div>'+
+  ' <ul class="specialTopicList"> ' 
+    for(var i = 0 ; i<4; i++){
+     html += '<li class="specialTopicLi">' +
+      '<a href="#">' +
+      '<img src="./images/17.png" alt="">' +
+      '</a>' +
+      '</li>' 
+    }
+    // '<li class="specialTopicLi>' +
+    // '<a href="#">' +
+    // '<img src="./images/16.png" alt="">' +
+    // '</a>' +
+    // '</li>' +
+    // '<li class="specialTopicLi>' +
+    // '<a href="#">' +
+    // '<img src="./images/17.png" alt="">' +
+    // '</a>' +
+    // '</li>' +
+    // '<li class="specialTopicLi>' +
+    // '<a href="#">' +
+    // '<img src="./images/20.png" alt="">' +
+    // '</a>' +
+    // '</li>' +
+    // '<li class="specialTopicLi>' +
+    // '<a href="#">' +
+    // '<img src="./images/19.png" alt="">' +
+    // '</a>' +
+    // '</li>' +
+    '</ul>'+
+    '</div>'
+    $('#cardContent').append(html); 
+}
 //路由跳转
 function myPage() {
   $.router.load('/myPage.html');
 }
-function specialList(){
+
+function specialList() {
   $.router.load('/specialList.html');
 }
 //滚动下拉显示回到顶部按钮
@@ -408,14 +455,23 @@ $('.content').scroll(function () {
 //点击按钮回到顶部
 $('#topBack').tap(function () {
   console.log(scrollHeight)
-  $('body,html').animate({
-    scrollTop: 0
+  $('html,body').animate({
+    scrollTop: "0px",
   }, 500)
 });
 //点击跳转到详情
 $('#cardContent').on('tap', '.active_img', function () {
   $.router.load('/details.html');
 });
+//获取当前点击tab的当前id
+$('#indexTab').on('tap', 'li', function (e) {
+  currentClickId = $(e.target).attr('id');
+});
+//点击专题列表到专题详情
+$('#cardContent').on('tap', '.specialTopicLi', function () {
+  $.router.load('/topicDetails.html');
+});
+
 //热点页面轮播图
 function slideHot() {
   setTimeout(function () {
@@ -437,12 +493,3 @@ function slideHot() {
     });
   }, 500)
 }
-
-//获取当前点击tab的当前id
-$('#indexTab').on('tap','li',function(e){
-  currentClickId =$(e.target).attr('id');
-});
-//点击专题列表到专题详情
-$('.specialTopicList').on('tap','li',function(){
-  $.router.load('/topicDetails.html');
-});

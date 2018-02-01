@@ -78,36 +78,9 @@
                     <div class="pull-to-refresh-arrow"></div>
                   </div>
                   <!-- 专题 -->
-                  <div class="specialTopic">
-                    <div class="titleName">
-                      <span class="name">专题</span>
-                      <span class="more" id="more" onclick="specialList()">更多></span>
-                    </div>
-                      <ul class="specialTopicList">
-                        <li>
-                          <a href="#">
-                            <img src="./images/16.png" alt="">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <img src="./images/17.png" alt="">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <img src="./images/20.png" alt="">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <img src="./images/19.png" alt="">
-                          </a>
-                        </li>
-                      </ul>
-                  </div>
+                  
                   <ul class="company_main_cover" id="cardContent">
-                    <!-- 模板渲染 -->
+                     <!-- 模板渲染 -->
                   </ul>
                   <div class="infinite-scroll-preloader" id="preloader_tab2" style="display: flex;justify-content: center;">
                     <div class="preloader" id="loadMoreloding"></div>
@@ -305,6 +278,8 @@
   <script type="text/javascript" src="./js/index/index.js" charset='utf-8'></script>
   <script src="./swiper/js/swiper.min.js"></script>
   <script src="./js/myPage/myPage.js" charset='utf-8'></script>
+  <script src="./js/specialList/specialList.js" charset='utf-8'></script>
+  <script src="./js/topicDetails/topicDetails.js" charset='utf-8'></script>
   <script src="./js/touchslider.js"></script>
   <script type="text/javascript">
     $.init();
@@ -314,13 +289,13 @@
       console.log(pageId);
       isNeedScroll = true;
       if (pageId == "index") {
-        pageIndeLoad(2);
+        pageIndeLoad(1);
       } else if (pageId == "myPage") {
         myPageInfo();
       } else if (pageId == "specialList") {
-        
+        TospecialList();
       } else if(pageId == "topicDetails"){
-
+        TotopicDetails();
       }
     });
   </script>
