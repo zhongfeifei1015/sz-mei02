@@ -372,11 +372,11 @@ function initLunboUI(data) {
     '<div>排行榜</div>' +
     '</div>' +
     '<div class="productList">' +
-    '<img src="./images/03.png" alt="">' +
+    '<img src="./images/03.png" alt="" onclick="ToMove()">' +
     '<div>看视频</div>' +
     '</div>' +
     '<div class="productList">' +
-    '<img src="./images/04.png" alt="">' +
+    '<img src="./images/04.png" alt="" onclick="ToYinPing()">' +
     '<div>美篇印品</div>' +
     '</div>' +
     '</div>'
@@ -466,6 +466,12 @@ function ToHoby(){
 function ToRanking(){
   $.router.load('/rankingList.html')
 }
+function ToMove(){
+  $.router.load('/watchMove.html')
+}
+function ToYinPing(){
+  $.router.load('/meipianYP.html')
+}
 //滚动下拉显示回到顶部按钮
 $('.content').scroll(function () {
   scrollHeight = $('.content').scrollTop();
@@ -479,8 +485,8 @@ $('.content').scroll(function () {
 $('#topBack').tap(function () {
   console.log(scrollHeight)
   $('html,body').animate({
-    scrollTop: "0px",
-  }, 500)
+    
+  }, 500);
 });
 //点击跳转到详情
 $('#cardContent').on('tap', '.active_img', function () {
