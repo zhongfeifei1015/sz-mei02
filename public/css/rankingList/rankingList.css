@@ -1,0 +1,42 @@
+#rankingContent {
+  background-color: #f0f3f5;
+  padding: 15px;
+  padding-top: 40px;
+}
+
+#rankingContent .medal {
+  width: 100%;
+  display: flex;
+}
+
+.medal .sencond,
+.medal .first,
+.medal .third {
+  flex: 1;
+  border: 1px solid #eee;
+  height: 100px;
+}
+
+.medal .first {
+  height: 120px;
+  margin-top: -20px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+}
+
+.medal .sign {
+  width: 100%;
+  height: 100%;
+  background-color: #FFF;
+  position: relative;
+}
+
+.medal .sign img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-top: -7px;
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+}

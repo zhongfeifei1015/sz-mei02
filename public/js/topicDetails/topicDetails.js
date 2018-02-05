@@ -11,5 +11,8 @@ function TotopicDetails() {
       $('.topShowOrHide').hide();
       $('.topShowOrHide').css('opacity',0);
     }
+  });
+  $('.contentUl').on('tap','.active_img',function(){
+    $.router.load('/details.html');
   })
 }

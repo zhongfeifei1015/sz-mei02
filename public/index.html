@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="./css/details/details.css">
   <link rel="stylesheet" href="./css/specialList/specialList.css">
   <link rel="stylesheet" href="./css/topicDetails/topicDetails.css">
+  <link rel="stylesheet" href="./css/findHoby/findHoby.css">
+  <link rel="stylesheet" href="./css/rankingList/rankingList.css">
 </head>
 <style>
   .swiper-container {
@@ -280,6 +282,7 @@
   <script src="./js/myPage/myPage.js" charset='utf-8'></script>
   <script src="./js/specialList/specialList.js" charset='utf-8'></script>
   <script src="./js/topicDetails/topicDetails.js" charset='utf-8'></script>
+  <script src="./js/findHoby/findHoby.js" charset='utf-8'></script>
   <script src="./js/touchslider.js"></script>
   <script type="text/javascript">
     $.init();
@@ -296,6 +299,10 @@
         TospecialList();
       } else if(pageId == "topicDetails"){
         TotopicDetails();
+      } else if(pageId == "hoby"){
+        findHobyInload();
+      } else if(pageId == "rankingList"){
+        
       }
     });
   </script>

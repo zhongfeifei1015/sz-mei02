@@ -31,6 +31,7 @@ var isNeedScroll = true;
 //提示的开关
 var messPromptFlag = 0;
 var tabflag = 1;
+//当前点击tab的id
 var currentClickId = "tabflag1"
 //获取带过来的参数
 function GetQueryString(name) {
@@ -46,7 +47,6 @@ function pageIndeLoad(data) {
   }
   //再次回到主页的方法
   if (data != 0) {
-    console.log('')
     switch (whichTab) {
       case 1:
         tab1Click();
@@ -115,7 +115,6 @@ function tab1Click(callBack) {
   currentTabBlock.appendTo($("#tab1"));
   $.pullToRefreshTrigger($("#tab1Content"));
 }
-
 //关注
 function tab2Click(callBack) {
   if (!!callBack) {
@@ -268,14 +267,35 @@ function dataHandlerData(data) {
   }
   if (currentClickId == "tabflag1") {
     initLunboUI(data);
-    commentUi(data);
   } else {
     topicUiComment(data);
-    commentUi(data);
   }
+    commentUi(data);
 }
-
-function bottomloadMoreTab1() {
+//滚动数据处理
+function dataHandlerDataBottom(data) {
+  //判断是否有数据，无数据就显示没有更多
+  if (data.length == 0) {
+    isOverLoad = true;
+    $("#noMore").show();
+    $("#loadMoreloding").hide();
+    return;
+  }
+  //当数据小于十个的时候不显示加载更多
+  if (data.length < 10) {
+    $("#loadMoreloding").hide();
+    $("#noMore").show();
+    $.detachInfiniteScroll($('#tab1Content'));
+  }
+  if (currentClickId == "tabflag1") {
+    initLunboUI(data);
+  } else {
+    topicUiComment(data);
+  }
+   commentUi(data);
+}
+//下拉刷新
+function topRefreshTab1() {
   // 添加'refresh'监听器
   $(document).on('refresh', '#tab1Content', function (e) {
     $(".content").scrollTop(0);
@@ -295,8 +315,8 @@ function bottomloadMoreTab1() {
     };
   });
 }
-
-function topRefreshTab1() {
+//滚动加载更多
+function bottomloadMoreTab1() {
   // 加载flag
   var loading = false;
   // 最多可加载的条目
@@ -311,11 +331,8 @@ function topRefreshTab1() {
     loading = true;
     $('#noMore').hide();
     $('#loadMoreloding').show();
-    // 模拟1s的加载过程
-    if (currentClickId == "tabflag1") {
-      getFirstAjax(stopLoad);
-    }
-
+    //模拟1s的加载过程
+    getFirstAjax(stopLoad);
     function stopLoad() {
       // 重置加载flag
       loading = false;
@@ -347,11 +364,11 @@ function initLunboUI(data) {
     '</div>' +
     '<div class="myProducts">' +
     '<div class="productList">' +
-    '<img src="./images/01.png" alt="">' +
+    '<img src="./images/01.png" alt="" onclick="ToHoby()">' +
     '<div>找兴趣</div>' +
     '</div>' +
     '<div class="productList">' +
-    '<img src="./images/02.png" alt="">' +
+    '<img src="./images/02.png" alt=""  onclick="ToRanking()">' +
     '<div>排行榜</div>' +
     '</div>' +
     '<div class="productList">' +
@@ -403,34 +420,34 @@ function topicUiComment(data) {
       '<span class="name">专题</span>'+
       '<span class="more" id="more" onclick="specialList()">更多></span>'+
     '</div>'+
-  ' <ul class="specialTopicList"> ' 
-    for(var i = 0 ; i<4; i++){
-     html += '<li class="specialTopicLi">' +
-      '<a href="#">' +
-      '<img src="./images/17.png" alt="">' +
-      '</a>' +
-      '</li>' 
-    }
-    // '<li class="specialTopicLi>' +
-    // '<a href="#">' +
-    // '<img src="./images/16.png" alt="">' +
-    // '</a>' +
-    // '</li>' +
-    // '<li class="specialTopicLi>' +
-    // '<a href="#">' +
-    // '<img src="./images/17.png" alt="">' +
-    // '</a>' +
-    // '</li>' +
-    // '<li class="specialTopicLi>' +
-    // '<a href="#">' +
-    // '<img src="./images/20.png" alt="">' +
-    // '</a>' +
-    // '</li>' +
-    // '<li class="specialTopicLi>' +
-    // '<a href="#">' +
-    // '<img src="./images/19.png" alt="">' +
-    // '</a>' +
-    // '</li>' +
+  ' <ul class="specialTopicList"> ' +
+    // for(var i = 0 ; i<4; i++){
+    //  html += '<li class="specialTopicLi">' +
+    //   '<a href="#">' +
+    //   '<img src="./images/17.png" alt="">' +
+    //   '</a>' +
+    //   '</li>' 
+    // }
+    '<li class="specialTopicLi>' +
+    '<a href="#">' +
+    '<img src="./images/16.png" alt="">' +
+    '</a>' +
+    '</li>' +
+    '<li class="specialTopicLi>' +
+    '<a href="#">' +
+    '<img src="./images/17.png" alt="">' +
+    '</a>' +
+    '</li>' +
+    '<li class="specialTopicLi>' +
+    '<a href="#">' +
+    '<img src="./images/20.png" alt="">' +
+    '</a>' +
+    '</li>' +
+    '<li class="specialTopicLi>' +
+    '<a href="#">' +
+    '<img src="./images/19.png" alt="">' +
+    '</a>' +
+    '</li>' +
     '</ul>'+
     '</div>'
     $('#cardContent').append(html); 
@@ -442,6 +459,12 @@ function myPage() {
 
 function specialList() {
   $.router.load('/specialList.html');
+}
+function ToHoby(){
+  $.router.load('/findHoby.html')
+}
+function ToRanking(){
+  $.router.load('/rankingList.html')
 }
 //滚动下拉显示回到顶部按钮
 $('.content').scroll(function () {
@@ -466,9 +489,10 @@ $('#cardContent').on('tap', '.active_img', function () {
 //获取当前点击tab的当前id
 $('#indexTab').on('tap', 'li', function (e) {
   currentClickId = $(e.target).attr('id');
+  console.log(currentClickId);
 });
 //点击专题列表到专题详情
-$('#cardContent').on('tap', '.specialTopicLi', function () {
+$('#cardContent').on('tap', '.specialTopicList', function () {
   $.router.load('/topicDetails.html');
 });
 
@@ -491,5 +515,5 @@ function slideHot() {
       clickable: true,
       clickableClass: 'my-pagination-clickable',
     });
-  }, 500)
+  }, 500);
 }
