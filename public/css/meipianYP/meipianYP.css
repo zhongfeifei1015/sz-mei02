@@ -19,3 +19,6 @@
 .bookList .discounts a{
   font-size: 14px;
 }
+.bookList >h4{
+  font-weight: 400;
+}

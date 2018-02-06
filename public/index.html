@@ -22,7 +22,6 @@
     width: 100%;
     height: 100px;
   }
-
   .swiper-slide {
     background-color: blueviolet
   }
@@ -81,9 +80,8 @@
                     <div class="pull-to-refresh-arrow"></div>
                   </div>
                   <!-- 专题 -->
-                  
                   <ul class="company_main_cover" id="cardContent">
-                     <!-- 模板渲染 -->
+                    <!-- 模板渲染 -->
                   </ul>
                   <div class="infinite-scroll-preloader" id="preloader_tab2" style="display: flex;justify-content: center;">
                     <div class="preloader" id="loadMoreloding"></div>
@@ -276,6 +274,7 @@
     </div>
   </div>
   <script src='./js/zepto.min.js' charset='utf-8'></script>
+  <!-- <script src='$.config = {router: false}' charset='utf-8'></script> -->
   <script src='./js/sm.min.js' charset='utf-8'></script>
   <script src="./js/total.js"></script>
   <script src="./js/index/index.js" charset='utf-8'></script>
@@ -299,14 +298,14 @@
         myPageInfo();
       } else if (pageId == "specialList") {
         TospecialList();
-      } else if(pageId == "topicDetails"){
+      } else if (pageId == "topicDetails") {
         TotopicDetails();
-      } else if(pageId == "hoby"){
+      } else if (pageId == "hoby") {
         findHobyInload();
-      } else if(pageId == "rankingList"){
+      } else if (pageId == "rankingList") {
         rankingList();
-      } else if(pageId == "meipianYP"){
-        
+      } else if (pageId == "meipianYP") {
+
       }
     });
   </script>

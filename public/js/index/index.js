@@ -40,7 +40,6 @@ function GetQueryString(name) {
   if (r != null) return unescape(r[2]);
   return null;
 }
-
 function pageIndeLoad(data) {
   if (!isResultPage) {
     return;
@@ -287,12 +286,36 @@ function dataHandlerDataBottom(data) {
     $("#noMore").show();
     $.detachInfiniteScroll($('#tab1Content'));
   }
-  if (currentClickId == "tabflag1") {
-    initLunboUI(data);
-  } else {
-    topicUiComment(data);
-  }
    commentUi(data);
+}
+function getBootomAjax(callBack) {
+  //开启加载指示器
+  $.showIndicator();
+  slideHot();
+  $.ajax({
+    url: postUrl + currentPostUrl,
+    type: "POST",
+    data: JSON.stringify(parmaData),
+    contentType: "application/json;charset=utf-8",
+    success: function (res) {
+      $.hideIndicator();
+      if (res.code == 200) {
+        isOverLoad = true;
+        $("#noMore").show();
+        $("#loadMoreloding").hide();
+        dataHandlerDataBottom(res.data);
+        //获取最后的数据填充参数以便回调
+        getLastData(res.data);
+        //是否有回调
+        if (!!callBack) {
+          callBack();
+        }
+      }
+    },
+    error: function (msg) {
+      $.toast("网络请求超时！！！")
+    }
+  });
 }
 //下拉刷新
 function topRefreshTab1() {
@@ -332,7 +355,7 @@ function bottomloadMoreTab1() {
     $('#noMore').hide();
     $('#loadMoreloding').show();
     //模拟1s的加载过程
-    getFirstAjax(stopLoad);
+    getBootomAjax(stopLoad);
     function stopLoad() {
       // 重置加载flag
       loading = false;
@@ -483,10 +506,7 @@ $('.content').scroll(function () {
 });
 //点击按钮回到顶部
 $('#topBack').tap(function () {
-  console.log(scrollHeight)
-  $('html,body').animate({
-    
-  }, 500);
+  $('.content').scrollTop(0)
 });
 //点击跳转到详情
 $('#cardContent').on('tap', '.active_img', function () {
@@ -501,7 +521,6 @@ $('#indexTab').on('tap', 'li', function (e) {
 $('#cardContent').on('tap', '.specialTopicList', function () {
   $.router.load('/topicDetails.html');
 });
-
 //热点页面轮播图
 function slideHot() {
   setTimeout(function () {

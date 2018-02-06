@@ -26,6 +26,8 @@
   display: none;
   z-index: 999;
   border-bottom: 1px solid #eee;
+  text-align: center;
+  line-height: 50px;
 }
 #topicDetailsConetnt .topBar .pictureInfo {
   position: absolute;

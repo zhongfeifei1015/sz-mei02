@@ -241,3 +241,6 @@ em{
 	float: left;
 	margin-left: 1rem
 }
+.swiper-pagination-bullet{
+	background-color: #fff !important;
+}
